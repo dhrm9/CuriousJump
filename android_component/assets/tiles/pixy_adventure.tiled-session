@@ -1,0 +1,45 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level1.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "level1.tmx": {
+            "scale": 1.11625,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 236.95408734602464,
+                "y": 176.48376259798437
+            }
+        },
+        "pixel_adventure.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "/home/vinny/mca4thsem/miniProject/pixy_adventure/assets/images/Terrain",
+    "map.height": 23,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 40,
+    "openFiles": [
+        "pixel_adventure.tsx",
+        "level1.tmx"
+    ],
+    "project": "pixy_adventure.tiled-project",
+    "property.type": "float",
+    "recentFiles": [
+        "pixel_adventure.tsx",
+        "level1.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
