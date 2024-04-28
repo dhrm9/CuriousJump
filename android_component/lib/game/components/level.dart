@@ -4,8 +4,11 @@ import 'package:android_component/game/components/collision_block.dart';
 import 'package:android_component/game/components/player.dart';
 import 'package:android_component/game/components/saw.dart';
 import 'package:android_component/quiz/quiz.dart';
+import 'package:android_component/quiz/quiz_reader.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 class Level extends World {
   late TiledComponent level;
@@ -13,18 +16,25 @@ class Level extends World {
   final String levelName;
   final Player player;
   late Quiz quiz;
-  final int correctOption = 1;
+  int questionNumber = 0;
+  late TextComponent questionText;
   List<CollisionBlock> collisionBlocks = [];
+  List<Saw> saws = [];
 
   Level({required this.levelName, required this.player});
 
+  final fontStyle = TextPaint(style: const TextStyle(fontSize: 30  , color: Colors.white));
+
   @override
   FutureOr<void> onLoad() async {
-    // quiz = QuizReader.readJson("filePath")
+    quiz = await QuizReader.readJson("assets/quiz/quiz.json");
+
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
 
     add(level);
 
+    questionText = TextComponent(text:"" , textRenderer: fontStyle , position: Vector2(100 ,100));
+    add(questionText);
     _spawnEntities();
 
     final collisionLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
@@ -48,10 +58,11 @@ class Level extends World {
 
     player.collisionBlocks = collisionBlocks;
 
+    reload();
+
     return super.onLoad();
   }
 
-  int cnt = 0;
   void _spawnEntities() {
     final spawnPointLayer = level.tileMap.getLayer<ObjectGroup>('SpawnPoints');
 
@@ -65,22 +76,37 @@ class Level extends World {
           case 'Saw':
             final isVertical = spawnPoint.properties.getValue('isVertical');
             final offsetN = spawnPoint.properties.getValue('offsetN');
-            bool isCorrect = false;
-            if (cnt == correctOption) {
-              isCorrect = true;
-            }
-            cnt++;
             final saw = Saw(
               isVertical: isVertical,
               offNeg: offsetN,
-              isCorrect: isCorrect,
               position: Vector2(spawnPoint.x, spawnPoint.y),
               size: Vector2(spawnPoint.width, spawnPoint.height),
             );
+            saws.add(saw);
             add(saw);
           default:
         }
       }
     }
+  }
+
+  void reload(){
+    questionText.text = quiz.questions[questionNumber].text;
+    player.reset();
+
+    for(Saw saw in saws){
+      saw.reset(false);
+    }
+
+    Future.delayed(const Duration(milliseconds: 10000) ,() {
+      for(Saw saw in saws){
+        saw.move();
+      }
+      questionNumber += 1;
+      questionNumber %= quiz.questions.length;
+      Future.delayed(const Duration(milliseconds: 1000 ) , (){
+        reload();
+      });
+    });
   }
 }

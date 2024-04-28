@@ -244,4 +244,8 @@ class Player extends SpriteAnimationGroupComponent
       });
     });
   }
+
+  void reset(){
+    _respawn();
+  }
 }
