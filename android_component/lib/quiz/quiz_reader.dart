@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:android_component/quiz/question.dart';
 import 'package:android_component/quiz/quiz.dart';
+import 'package:flutter/services.dart';
 
 class QuizReader {
 
@@ -24,10 +24,10 @@ class QuizReader {
     }
   }
 
-  static Quiz readJson(String filePath) {
+  static Future<Quiz>  readJson (String filePath) async{
     try {
-      final file = File(filePath);
-      final jsonString = file.readAsStringSync();
+      // final file = await File(filePath);
+      final jsonString = await rootBundle.loadString(filePath);
 
       final jsonMap = json.decode(jsonString);
 

@@ -9,7 +9,8 @@ class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure> {
 
   final bool isVertical;
   final double offNeg;
-  final bool isCorrect;
+  bool isCorrect;
+  final Vector2 startPos;
   bool isMoving = false;
 
   // ignore: use_super_parameters
@@ -19,7 +20,8 @@ class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure> {
     this.offNeg = 0,
     position,
     size,
-  }) : super(
+  })  : startPos = position,
+        super(
           position: position,
           size: size,
         );
@@ -49,7 +51,6 @@ class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure> {
       ),
     );
 
-    startTime(const Duration(milliseconds: 10000));
     return super.onLoad();
   }
 
@@ -68,9 +69,13 @@ class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure> {
     position.y += moveDirection * moveSpeed * dt;
   }
 
-  void startTime(Duration duration) {
-    Future.delayed(duration, () {
-      isMoving = true;
-    });
+  void move() {
+    isMoving = true;
+  }
+
+  void reset(bool isCorrect) {
+    this.isCorrect = isCorrect;
+    position = startPos;
+    isMoving = false;
   }
 }

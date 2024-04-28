@@ -1,5 +1,5 @@
 {
-    "quizType": "Capital",
+    "type": "Capital",
     "questions": [
       {
         "question": "What is the capital of France?",
