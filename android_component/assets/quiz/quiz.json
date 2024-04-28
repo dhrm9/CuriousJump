@@ -1,0 +1,21 @@
+{
+    "quizType": "Capital",
+    "questions": [
+      {
+        "question": "What is the capital of France?",
+        "options": ["London", "Paris", "Berlin", "Rome"],
+        "correctAnswer": "Paris"
+      },
+      {
+        "question": "What is the capital of India?",
+        "options": ["Delhi", "Mumbai", "Kolkata", "Lucknow"],
+        "correctAnswer": "Delhi"
+      },
+      {
+        "question": "Which country has Kahtmandu as its capital?",
+        "options": ["Bangladesh", "Srilanka", "Bhutan", "Nepal"],
+        "correctAnswer": "Delhi"
+      }
+    ]
+  }
+  
