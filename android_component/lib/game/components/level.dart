@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:android_component/game/components/collision_block.dart';
 import 'package:android_component/game/components/player.dart';
 import 'package:android_component/game/components/saw.dart';
+import 'package:android_component/quiz/quiz.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
@@ -11,6 +12,7 @@ class Level extends World {
 
   final String levelName;
   final Player player;
+  late Quiz quiz;
   final int correctOption = 1;
   List<CollisionBlock> collisionBlocks = [];
 
@@ -18,6 +20,7 @@ class Level extends World {
 
   @override
   FutureOr<void> onLoad() async {
+    // quiz = QuizReader.readJson("filePath")
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
 
     add(level);
