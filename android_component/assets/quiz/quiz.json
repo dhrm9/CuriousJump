@@ -4,17 +4,17 @@
       {
         "question": "What is the capital of France?",
         "options": ["London", "Paris", "Berlin", "Rome"],
-        "correctAnswer": "Paris"
+        "correctAnswer": "1"
       },
       {
         "question": "What is the capital of India?",
         "options": ["Delhi", "Mumbai", "Kolkata", "Lucknow"],
-        "correctAnswer": "Delhi"
+        "correctAnswer": "0"
       },
       {
         "question": "Which country has Kahtmandu as its capital?",
         "options": ["Bangladesh", "Srilanka", "Bhutan", "Nepal"],
-        "correctAnswer": "Delhi"
+        "correctAnswer": "3"
       }
     ]
   }

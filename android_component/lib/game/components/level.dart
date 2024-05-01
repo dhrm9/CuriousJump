@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:android_component/game/components/collision_block.dart';
 import 'package:android_component/game/components/player.dart';
 import 'package:android_component/game/components/saw.dart';
+import 'package:android_component/quiz/question.dart';
 import 'package:android_component/quiz/quiz.dart';
 import 'package:android_component/quiz/quiz_reader.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 class Level extends World {
   late TiledComponent level;
@@ -18,12 +18,14 @@ class Level extends World {
   late Quiz quiz;
   int questionNumber = 0;
   late TextComponent questionText;
+  List<TextComponent> options = [];
   List<CollisionBlock> collisionBlocks = [];
   List<Saw> saws = [];
 
   Level({required this.levelName, required this.player});
 
-  final fontStyle = TextPaint(style: const TextStyle(fontSize: 30  , color: Colors.white));
+  final fontStyle =
+      TextPaint(style: const TextStyle(fontSize: 30, color: Colors.white));
 
   @override
   FutureOr<void> onLoad() async {
@@ -33,8 +35,7 @@ class Level extends World {
 
     add(level);
 
-    questionText = TextComponent(text:"" , textRenderer: fontStyle , position: Vector2(100 ,100));
-    add(questionText);
+    _addTextComponents();
     _spawnEntities();
 
     final collisionLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
@@ -90,23 +91,61 @@ class Level extends World {
     }
   }
 
-  void reload(){
-    questionText.text = quiz.questions[questionNumber].text;
-    player.reset();
+  void reload() {
+    Question question = quiz.questions[questionNumber];
+    questionText.text = question.text;
 
-    for(Saw saw in saws){
-      saw.reset(false);
+    final optionList = question.options;
+
+    for (int i = 0; i < optionList.length; i++) {
+      options[i].text = optionList[i];
     }
 
-    Future.delayed(const Duration(milliseconds: 10000) ,() {
-      for(Saw saw in saws){
+    player.reset();
+
+    for (int i = 0; i < saws.length; i++) {
+      if (i == question.correctAnswer) {
+        saws[i].reset(true);
+      } else {
+        saws[i].reset(false);
+      }
+    }
+
+    Future.delayed(const Duration(milliseconds: 10000), () {
+      for (Saw saw in saws) {
         saw.move();
       }
       questionNumber += 1;
       questionNumber %= quiz.questions.length;
-      Future.delayed(const Duration(milliseconds: 1000 ) , (){
+      Future.delayed(const Duration(milliseconds: 1000), () {
         reload();
       });
     });
+  }
+
+  void _addTextComponents() {
+    final textLayer = level.tileMap.getLayer<ObjectGroup>('Texts');
+    if (textLayer != null) {
+      for (final text in textLayer.objects) {
+        switch (text.class_) {
+          case 'Question':
+            questionText = TextComponent(
+                text: "",
+                textRenderer: fontStyle,
+                position: Vector2(text.x, text.y));
+            add(questionText);
+            break;
+          case 'Options':
+            final option = TextComponent(
+                text: "",
+                textRenderer: fontStyle,
+                position: Vector2(text.x, text.y));
+            add(option);
+            options.add(option);
+            break;
+          default:
+        }
+      }
+    }
   }
 }

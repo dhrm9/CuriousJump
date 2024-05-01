@@ -5,7 +5,6 @@ import 'package:android_component/quiz/quiz.dart';
 import 'package:flutter/services.dart';
 
 class QuizReader {
-
   static QuizType parseQuizType(String quizTypeString) {
     switch (quizTypeString) {
       case 'Animal':
@@ -24,7 +23,7 @@ class QuizReader {
     }
   }
 
-  static Future<Quiz>  readJson (String filePath) async{
+  static Future<Quiz> readJson(String filePath) async {
     try {
       // final file = await File(filePath);
       final jsonString = await rootBundle.loadString(filePath);
@@ -38,7 +37,7 @@ class QuizReader {
           .map((questionJson) => Question(
                 text: questionJson['question'],
                 options: List<String>.from(questionJson['options']),
-                correctAnswer: questionJson['correctAnswer'],
+                correctAnswer: int.parse(questionJson['correctAnswer']),
               ))
           .toList();
 
