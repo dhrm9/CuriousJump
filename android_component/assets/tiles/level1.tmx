@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="37">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="42">
  <tileset firstgid="1" source="pixel_adventure.tsx"/>
  <layer id="4" name="backGround" width="40" height="23">
   <data encoding="csv">
@@ -24,18 +24,18 @@
 0,0,25,29,30,30,30,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,0,0,
 0,0,25,51,52,52,52,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,0,0,
 0,0,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,0,0,
+0,0,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,0,0
 </data>
  </layer>
- <objectgroup id="9" name="Texts">
+ <objectgroup id="9" name="Texts" visible="0">
   <object id="28" name="question" type="Question" x="176" y="80" width="384" height="48"/>
   <object id="29" type="Options" x="192" y="192" width="48" height="32"/>
   <object id="34" type="Options" x="304" y="192" width="48" height="32"/>
   <object id="35" type="Options" x="416" y="192" width="48" height="32"/>
   <object id="36" type="Options" x="528" y="192" width="48" height="32"/>
  </objectgroup>
- <objectgroup id="8" name="Collisions" visible="0">
+ <objectgroup id="8" name="Collisions">
   <object id="12" x="32" y="32" width="16" height="304"/>
   <object id="13" x="32" y="32" width="576" height="16"/>
   <object id="14" x="592" y="32" width="16" height="304"/>
@@ -46,28 +46,32 @@
   <object id="19" x="416" y="224" width="48" height="16"/>
   <object id="20" x="528" y="224" width="48" height="16"/>
   <object id="21" x="112" y="400"/>
+  <object id="37" type="CheckPoint" x="192" y="192" width="48" height="32"/>
+  <object id="39" type="CheckPoint" x="304" y="192" width="48" height="32"/>
+  <object id="40" type="CheckPoint" x="416" y="192" width="48" height="32"/>
+  <object id="41" type="CheckPoint" x="528" y="192" width="48" height="32"/>
  </objectgroup>
- <objectgroup id="7" name="SpawnPoints">
+ <objectgroup id="7" name="SpawnPoints" visible="0">
   <object id="9" name="Player" type="Player" x="94.0649" y="239" width="32" height="32"/>
-  <object id="22" type="Saw" x="208" y="304" width="32" height="32">
+  <object id="22" type="Saw" x="192" y="304" width="48" height="48">
    <properties>
     <property name="isVertical" type="bool" value="true"/>
     <property name="offsetN" type="float" value="6"/>
    </properties>
   </object>
-  <object id="23" type="Saw" x="320" y="304" width="32" height="32">
+  <object id="23" type="Saw" x="304" y="304" width="48" height="48">
    <properties>
     <property name="isVertical" type="bool" value="true"/>
     <property name="offsetN" type="float" value="6"/>
    </properties>
   </object>
-  <object id="24" type="Saw" x="432" y="304" width="32" height="32">
+  <object id="24" type="Saw" x="416" y="304" width="48" height="48">
    <properties>
     <property name="isVertical" type="bool" value="true"/>
     <property name="offsetN" type="float" value="6"/>
    </properties>
   </object>
-  <object id="25" type="Saw" x="544" y="304" width="32" height="32">
+  <object id="25" type="Saw" x="528" y="304" width="48" height="48">
    <properties>
     <property name="isVertical" type="bool" value="true"/>
     <property name="offsetN" type="float" value="6"/>

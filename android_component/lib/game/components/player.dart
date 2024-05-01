@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:android_component/game/components/collision_block.dart';
+import 'package:android_component/game/components/platforms.dart';
 import 'package:android_component/game/components/player_hitbox.dart';
 import 'package:android_component/game/components/saw.dart';
 import 'package:android_component/game/components/utils.dart';
@@ -39,6 +40,8 @@ class Player extends SpriteAnimationGroupComponent
   bool isOnGround = false;
   bool hasJumped = false;
   bool gotHit = false;
+  bool onCorrectPlatform = false;
+  bool canMove = true;
 
   List<CollisionBlock> collisionBlocks = [];
   PlayerHitbox hitbox = PlayerHitbox(
@@ -69,8 +72,10 @@ class Player extends SpriteAnimationGroupComponent
 
     while (accumulatedTime >= fixedDeltaTime) {
       if (!gotHit) {
-        _updatePlayerState();
-        _updatePlayerMovement(fixedDeltaTime);
+        if (canMove) {
+          _updatePlayerState();
+          _updatePlayerMovement(fixedDeltaTime);
+        }
         _checkHorizontalCollisions();
         _applyGravity(fixedDeltaTime);
         _checkVerticalCollision();
@@ -186,7 +191,17 @@ class Player extends SpriteAnimationGroupComponent
   @override
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Saw) _respawn();
+    if (other is Saw) {
+      _respawn();
+    }
+    if (other is Platform) {
+      print("Collision");
+      if (other.isCorrect) {
+        onCorrectPlatform = true;
+      } else {
+        onCorrectPlatform = false;
+      }
+    }
     super.onCollisionStart(intersectionPoints, other);
   }
 
@@ -245,7 +260,16 @@ class Player extends SpriteAnimationGroupComponent
     });
   }
 
-  void reset(){
+  bool isPlayerOnCorrectPlatform() {
+    return onCorrectPlatform;
+  }
+
+  void reset() {
+    canMove = true;
     _respawn();
+  }
+
+  void dontMove() {
+    canMove = false;
   }
 }

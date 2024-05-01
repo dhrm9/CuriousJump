@@ -77,5 +77,6 @@ class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure> {
     this.isCorrect = isCorrect;
     position = startPos;
     isMoving = false;
+    moveDirection = -1;
   }
 }

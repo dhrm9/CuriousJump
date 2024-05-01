@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:android_component/game/components/collision_block.dart';
+import 'package:android_component/game/components/platforms.dart';
 import 'package:android_component/game/components/player.dart';
 import 'package:android_component/game/components/saw.dart';
 import 'package:android_component/quiz/question.dart';
@@ -20,6 +21,7 @@ class Level extends World {
   late TextComponent questionText;
   List<TextComponent> options = [];
   List<CollisionBlock> collisionBlocks = [];
+  List<Platform> platforms = [];
   List<Saw> saws = [];
 
   Level({required this.levelName, required this.player});
@@ -44,6 +46,13 @@ class Level extends World {
       for (final collision in collisionLayer.objects) {
         switch (collision.class_) {
           case 'Platform':
+            break;
+          case 'CheckPoint':
+            final platform = Platform(
+                position: Vector2(collision.x, collision.y),
+                size: Vector2(collision.width, collision.height));
+            add(platform);
+            platforms.add(platform);
             break;
           default:
             final block = CollisionBlock(
@@ -106,19 +115,27 @@ class Level extends World {
     for (int i = 0; i < saws.length; i++) {
       if (i == question.correctAnswer) {
         saws[i].reset(true);
+        platforms[i].reset(true);
       } else {
         saws[i].reset(false);
+        platforms[i].reset(false);
       }
     }
 
-    Future.delayed(const Duration(milliseconds: 10000), () {
+    Future.delayed(const Duration(milliseconds: 3000), () {
+      player.dontMove();
       for (Saw saw in saws) {
         saw.move();
       }
       questionNumber += 1;
       questionNumber %= quiz.questions.length;
-      Future.delayed(const Duration(milliseconds: 1000), () {
-        reload();
+      Future.delayed(const Duration(milliseconds: 3000), () {
+        if (player.onCorrectPlatform) {
+          questionText.text = "Correct Answer";
+        } else {
+          questionText.text = "Wrong Answer";
+        }
+        Future.delayed(const Duration(milliseconds: 2000), () => reload());
       });
     });
   }
