@@ -12,6 +12,7 @@ class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure> {
   bool isCorrect;
   final Vector2 startPos;
   bool isMoving = false;
+  bool reachedTop = false;
 
   // ignore: use_super_parameters
   Saw({
@@ -65,6 +66,7 @@ class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure> {
   void _moveVertically(double dt) {
     if (position.y <= rangeNeg) {
       moveDirection = 0;
+      reachedTop = true;
     }
     position.y += moveDirection * moveSpeed * dt;
   }
@@ -78,5 +80,6 @@ class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure> {
     position = startPos;
     isMoving = false;
     moveDirection = -1;
+    reachedTop = false;
   }
 }

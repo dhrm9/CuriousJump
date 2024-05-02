@@ -12,7 +12,7 @@ import 'package:android_component/quiz/quiz_reader.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
-class Level extends World with HasGameRef<PixelAdventure>{
+class Level extends World with HasGameRef<PixelAdventure> {
   late TiledComponent level;
 
   final String levelName;
@@ -20,12 +20,22 @@ class Level extends World with HasGameRef<PixelAdventure>{
   late Quiz quiz;
   int questionNumber = 0;
   late TextBoxComponent questionText;
+  late TextBoxComponent timerText;
   List<TextBoxComponent> options = [];
   List<CollisionBlock> collisionBlocks = [];
   List<Platform> platforms = [];
   List<Saw> saws = [];
+  late Timer timer;
+  final int allowedTime;
+  bool changeQuestion = false;
+  bool loadingNewLevel = false;
+  double remainingTime = 0;
 
-  Level({required this.levelName, required this.player});
+  Level({
+    required this.levelName,
+    required this.player,
+    required this.allowedTime,
+  });
 
   @override
   FutureOr<void> onLoad() async {
@@ -67,6 +77,37 @@ class Level extends World with HasGameRef<PixelAdventure>{
     game.overlays.add('PauseButton');
     reload();
     return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    timer.update(dt);
+    remainingTime = allowedTime - timer.progress * allowedTime;
+    timerText.text = remainingTime.toStringAsFixed(1);
+    if (timer.finished && (!loadingNewLevel || !changeQuestion)) {
+      loadingNewLevel = true;
+      player.dontMove();
+
+      for (Saw saw in saws) {
+        saw.move();
+        if (saw.reachedTop) {
+          changeQuestion = true;
+        }
+      }
+      if (changeQuestion) {
+        if (player.onCorrectPlatform) {
+          questionText.textRenderer = correctAnswerFontStyle;
+          questionText.text = "Correct Answer";
+        } else {
+          questionText.textRenderer = wrongAnswerFontStyle;
+          questionText.text = "Wrong Answer";
+        }
+        questionNumber += 1;
+        questionNumber %= quiz.questions.length;
+        Future.delayed(const Duration(milliseconds: 2000), ()=> reload());
+      }
+    }
   }
 
   void _spawnEntities() {
@@ -118,25 +159,10 @@ class Level extends World with HasGameRef<PixelAdventure>{
         platforms[i].reset(false);
       }
     }
+    timer = Timer(allowedTime.toDouble());
+    changeQuestion = false;
+    loadingNewLevel = false;
 
-    Future.delayed(const Duration(milliseconds: 10000), () {
-      player.dontMove();
-      for (Saw saw in saws) {
-        saw.move();
-      }
-      questionNumber += 1;
-      questionNumber %= quiz.questions.length;
-      Future.delayed(const Duration(milliseconds: 3000), () {
-        if (player.onCorrectPlatform) {
-          questionText.textRenderer = correctAnswerFontStyle;
-          questionText.text = "Correct Answer";
-        } else {
-          questionText.textRenderer = wrongAnswerFontStyle;
-          questionText.text = "Wrong Answer";
-        }
-        Future.delayed(const Duration(milliseconds: 2000), () => reload());
-      });
-    });
   }
 
   void _addTextComponents() {
@@ -167,11 +193,19 @@ class Level extends World with HasGameRef<PixelAdventure>{
             add(option);
             options.add(option);
             break;
+          case 'Timer':
+            timerText = TextBoxComponent(
+              text: "",
+              textRenderer: questionTextFontStyle,
+              position: Vector2(text.x, text.y),
+              size: Vector2(text.width, text.height),
+              align: Anchor.center,
+              boxConfig: TextBoxConfig(maxWidth: text.width),
+            );
+            add(timerText);
           default:
         }
       }
     }
   }
-  
-  
 }
