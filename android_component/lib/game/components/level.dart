@@ -4,30 +4,28 @@ import 'package:android_component/game/components/collision_block.dart';
 import 'package:android_component/game/components/platforms.dart';
 import 'package:android_component/game/components/player.dart';
 import 'package:android_component/game/components/saw.dart';
+import 'package:android_component/game/components/utils.dart';
+import 'package:android_component/game/pixel_adventure.dart';
 import 'package:android_component/quiz/question.dart';
 import 'package:android_component/quiz/quiz.dart';
 import 'package:android_component/quiz/quiz_reader.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:flutter/material.dart';
 
-class Level extends World {
+class Level extends World with HasGameRef<PixelAdventure>{
   late TiledComponent level;
 
   final String levelName;
   final Player player;
   late Quiz quiz;
   int questionNumber = 0;
-  late TextComponent questionText;
-  List<TextComponent> options = [];
+  late TextBoxComponent questionText;
+  List<TextBoxComponent> options = [];
   List<CollisionBlock> collisionBlocks = [];
   List<Platform> platforms = [];
   List<Saw> saws = [];
 
   Level({required this.levelName, required this.player});
-
-  final fontStyle =
-      TextPaint(style: const TextStyle(fontSize: 30, color: Colors.white));
 
   @override
   FutureOr<void> onLoad() async {
@@ -65,11 +63,9 @@ class Level extends World {
         }
       }
     }
-
     player.collisionBlocks = collisionBlocks;
-
+    game.overlays.add('PauseButton');
     reload();
-
     return super.onLoad();
   }
 
@@ -102,6 +98,7 @@ class Level extends World {
 
   void reload() {
     Question question = quiz.questions[questionNumber];
+    questionText.textRenderer = questionTextFontStyle;
     questionText.text = question.text;
 
     final optionList = question.options;
@@ -122,7 +119,7 @@ class Level extends World {
       }
     }
 
-    Future.delayed(const Duration(milliseconds: 3000), () {
+    Future.delayed(const Duration(milliseconds: 10000), () {
       player.dontMove();
       for (Saw saw in saws) {
         saw.move();
@@ -131,8 +128,10 @@ class Level extends World {
       questionNumber %= quiz.questions.length;
       Future.delayed(const Duration(milliseconds: 3000), () {
         if (player.onCorrectPlatform) {
+          questionText.textRenderer = correctAnswerFontStyle;
           questionText.text = "Correct Answer";
         } else {
+          questionText.textRenderer = wrongAnswerFontStyle;
           questionText.text = "Wrong Answer";
         }
         Future.delayed(const Duration(milliseconds: 2000), () => reload());
@@ -146,17 +145,25 @@ class Level extends World {
       for (final text in textLayer.objects) {
         switch (text.class_) {
           case 'Question':
-            questionText = TextComponent(
-                text: "",
-                textRenderer: fontStyle,
-                position: Vector2(text.x, text.y));
+            questionText = TextBoxComponent(
+              text: "",
+              textRenderer: questionTextFontStyle,
+              position: Vector2(text.x, text.y),
+              size: Vector2(text.width, text.height),
+              align: Anchor.center,
+              boxConfig: TextBoxConfig(maxWidth: text.width),
+            );
             add(questionText);
             break;
           case 'Options':
-            final option = TextComponent(
-                text: "",
-                textRenderer: fontStyle,
-                position: Vector2(text.x, text.y));
+            final option = TextBoxComponent(
+              text: "",
+              textRenderer: optionTextFontStyle,
+              position: Vector2(text.x, text.y),
+              size: Vector2(text.width, text.height),
+              align: Anchor.center,
+              boxConfig: TextBoxConfig(maxWidth: text.width),
+            );
             add(option);
             options.add(option);
             break;
@@ -165,4 +172,6 @@ class Level extends World {
       }
     }
   }
+  
+  
 }
