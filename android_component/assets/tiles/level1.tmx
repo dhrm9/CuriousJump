@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="42">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="44">
  <tileset firstgid="1" source="pixel_adventure.tsx"/>
  <layer id="4" name="backGround" width="40" height="23">
   <data encoding="csv">
@@ -34,6 +34,7 @@
   <object id="34" type="Options" x="288" y="176" width="80" height="48"/>
   <object id="35" type="Options" x="400" y="176" width="80" height="48"/>
   <object id="36" type="Options" x="512" y="176" width="80" height="48"/>
+  <object id="43" type="Timer" x="64" y="64" width="64" height="32"/>
  </objectgroup>
  <objectgroup id="8" name="Collisions" visible="0">
   <object id="12" x="32" y="32" width="16" height="304"/>
