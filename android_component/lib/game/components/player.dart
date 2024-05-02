@@ -30,7 +30,7 @@ class Player extends SpriteAnimationGroupComponent
   final double stepTime = 0.05;
 
   final double gravity = 9.8;
-  final double jumpForce = 260;
+  final double jumpForce = 300;
   final double terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100;
@@ -189,20 +189,20 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Saw) {
-      _respawn();
-    }
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+      // print("Collision");
+
     if (other is Platform) {
-      print("Collision");
       if (other.isCorrect) {
         onCorrectPlatform = true;
       } else {
         onCorrectPlatform = false;
       }
     }
-    super.onCollisionStart(intersectionPoints, other);
+    if (other is Saw) {
+      _respawn();
+    }
+    super.onCollision(intersectionPoints, other);
   }
 
   void _applyGravity(double dt) {

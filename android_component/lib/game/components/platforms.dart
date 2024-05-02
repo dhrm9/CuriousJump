@@ -17,9 +17,8 @@ class Platform extends PositionComponent {
 
   @override
   FutureOr<void> onLoad() {
-    debugMode = true;
-    add(RectangleHitbox(
-        position: position, size: size, collisionType: CollisionType.passive));
+    // debugMode = true;
+    add(RectangleHitbox());
     return super.onLoad();
   }
 
