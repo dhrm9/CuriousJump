@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:android_component/game/components/collision_block.dart';
 import 'package:android_component/game/components/platforms.dart';
@@ -19,6 +20,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
   final Player player;
   late Quiz quiz;
   int questionNumber = 0;
+  late List<int> questionIndexSet;
   late TextBoxComponent questionText;
   late TextBoxComponent timerText;
   List<TextBoxComponent> options = [];
@@ -30,6 +32,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
   bool changeQuestion = false;
   bool loadingNewLevel = false;
   double remainingTime = 0;
+  Random random = Random();
 
   Level({
     required this.levelName,
@@ -40,6 +43,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
   @override
   FutureOr<void> onLoad() async {
     quiz = await QuizReader.readJson("assets/quiz/quiz.json");
+    questionIndexSet = List.generate(quiz.questions.length, (index) => index);
 
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
 
@@ -99,13 +103,15 @@ class Level extends World with HasGameRef<PixelAdventure> {
         if (player.onCorrectPlatform) {
           questionText.textRenderer = correctAnswerFontStyle;
           questionText.text = "Correct Answer";
+          game.correctAnswer += 1;
         } else {
           questionText.textRenderer = wrongAnswerFontStyle;
           questionText.text = "Wrong Answer";
+          game.wrongAnswer += 1;
         }
         questionNumber += 1;
         questionNumber %= quiz.questions.length;
-        Future.delayed(const Duration(milliseconds: 2000), ()=> reload());
+        Future.delayed(const Duration(milliseconds: 2000), () => reload());
       }
     }
   }
@@ -138,31 +144,42 @@ class Level extends World with HasGameRef<PixelAdventure> {
   }
 
   void reload() {
-    Question question = quiz.questions[questionNumber];
-    questionText.textRenderer = questionTextFontStyle;
-    questionText.text = question.text;
+    if (questionIndexSet.isEmpty) {
+      game.pauseEngine();
+      game.overlays.add('GameOverMenu');
+    } else {
+      int randomIndex = random.nextInt(questionIndexSet.length);
 
-    final optionList = question.options;
+      // print(randomIndex);
 
-    for (int i = 0; i < optionList.length; i++) {
-      options[i].text = optionList[i];
-    }
+      questionNumber = questionIndexSet[randomIndex];
+      questionIndexSet.removeAt(randomIndex);
 
-    player.reset();
+      Question question = quiz.questions[questionNumber];
+      questionText.textRenderer = questionTextFontStyle;
+      questionText.text = question.text;
 
-    for (int i = 0; i < saws.length; i++) {
-      if (i == question.correctAnswer) {
-        saws[i].reset(true);
-        platforms[i].reset(true);
-      } else {
-        saws[i].reset(false);
-        platforms[i].reset(false);
+      final optionList = question.options;
+
+      for (int i = 0; i < optionList.length; i++) {
+        options[i].text = optionList[i];
       }
-    }
-    timer = Timer(allowedTime.toDouble());
-    changeQuestion = false;
-    loadingNewLevel = false;
 
+      player.reset();
+
+      for (int i = 0; i < saws.length; i++) {
+        if (i == question.correctAnswer) {
+          saws[i].reset(true);
+          platforms[i].reset(true);
+        } else {
+          saws[i].reset(false);
+          platforms[i].reset(false);
+        }
+      }
+      timer = Timer(allowedTime.toDouble());
+      changeQuestion = false;
+      loadingNewLevel = false;
+    }
   }
 
   void _addTextComponents() {

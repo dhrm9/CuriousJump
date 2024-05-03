@@ -74,6 +74,8 @@ flutter:
     - assets/quiz/quiz.json
     - assets/images/Menu/Buttons/Pause.png
     - assets/images/Menu/Buttons/PlayN.png
+    - assets/images/Menu/Buttons/Restart.png
+    - assets/images/Menu/Buttons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
