@@ -52,7 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
       game: PixelAdventure(),
       overlayBuilderMap: const {
         'PauseButton': pauseButtonBuilder,
-        'PauseMenu': pauseMenuBuilder
+        'PauseMenu': pauseMenuBuilder,
+        'GameOverMenu': gameOverMenuBuilder,
       },
     );
   }

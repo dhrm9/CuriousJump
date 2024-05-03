@@ -15,6 +15,8 @@ class PixelAdventure extends FlameGame
 
   late final CameraComponent cam;
   bool showControls = true;
+  int correctAnswer = 0;
+  int wrongAnswer = 0;
 
   Player player = Player(mainCharacter: 'Mask Dude');
   late JoystickComponent joystick;
@@ -26,7 +28,7 @@ class PixelAdventure extends FlameGame
     final world1 = Level(
       player: player,
       levelName: 'level1',
-      allowedTime: 10,
+      allowedTime: 1,
     );
 
     cam = CameraComponent.withFixedResolution(

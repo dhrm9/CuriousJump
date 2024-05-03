@@ -70,7 +70,7 @@ Widget pauseButtonBuilder(BuildContext context, PixelAdventure game) {
 Widget pauseMenuBuilder(BuildContext context, PixelAdventure game) {
   return Center(
     child: Card(
-      color: Colors.black.withOpacity(0.5),
+      color: Colors.black.withOpacity(0.8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -82,13 +82,81 @@ Widget pauseMenuBuilder(BuildContext context, PixelAdventure game) {
               color: Colors.white,
             ),
           ),
-          IconButton(
-            onPressed: () {
-              game.overlays.remove('PauseMenu');
-              game.resumeEngine();
-            },
-            icon: Image.asset('assets/images/Menu/Buttons/PlayN.png'),
-          )
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                onPressed: () {
+                  game.overlays.remove('PauseMenu');
+                  game.resumeEngine();
+                },
+                icon: Image.asset('assets/images/Menu/Buttons/PlayN.png'),
+              ),
+              IconButton(
+                onPressed: () {
+                  game.overlays.remove('PauseMenu');
+                  // game.resumeEngine();
+                },
+                icon: Image.asset('assets/images/Menu/Buttons/Home.png'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget gameOverMenuBuilder(BuildContext context, PixelAdventure game) {
+  return Center(
+    child: Card(
+      color: Colors.black.withOpacity(0.8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            "Game Over",
+            style: TextStyle(
+              fontSize: 30.0,
+              color: Colors.white,
+            ),
+          ),
+          Text(
+            "Correct Answer: ${game.correctAnswer}",
+            style: const TextStyle(
+              fontSize: 30.0,
+              color: Colors.green,
+            ),
+          ),
+          Text(
+            "Wrong Answer: ${game.wrongAnswer}",
+            style: const TextStyle(
+              fontSize: 30.0,
+              color: Colors.red,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                onPressed: () {
+                  game.overlays.remove('GameOverMenu');
+                  // game.resumeEngine();
+                },
+                icon: Image.asset('assets/images/Menu/Buttons/Restart.png'),
+              ),
+              IconButton(
+                onPressed: () {
+                  game.overlays.remove('GameOverMenu');
+                  // game.resumeEngine();
+                },
+                icon: Image.asset('assets/images/Menu/Buttons/Home.png'),
+              ),
+            ],
+          ),
         ],
       ),
     ),
