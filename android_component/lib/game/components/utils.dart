@@ -1,4 +1,6 @@
+import 'package:android_component/audio/audio_manager.dart';
 import 'package:android_component/game/pixel_adventure.dart';
+import 'package:android_component/screens/main_menu.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
@@ -60,6 +62,7 @@ final correctAnswerFontStyle = TextPaint(
 Widget pauseButtonBuilder(BuildContext context, PixelAdventure game) {
   return IconButton(
     onPressed: () {
+      AudioManager.instance.pauseBgm();
       game.pauseEngine();
       game.overlays.add('PauseMenu');
     },
@@ -88,6 +91,7 @@ Widget pauseMenuBuilder(BuildContext context, PixelAdventure game) {
             children: [
               IconButton(
                 onPressed: () {
+                  AudioManager.instance.resumeBgm();
                   game.overlays.remove('PauseMenu');
                   game.resumeEngine();
                 },
@@ -96,7 +100,11 @@ Widget pauseMenuBuilder(BuildContext context, PixelAdventure game) {
               IconButton(
                 onPressed: () {
                   game.overlays.remove('PauseMenu');
-                  // game.resumeEngine();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const MainMenu(),
+                    ),
+                  );
                 },
                 icon: Image.asset('assets/images/Menu/Buttons/Home.png'),
               ),
@@ -151,7 +159,12 @@ Widget gameOverMenuBuilder(BuildContext context, PixelAdventure game) {
               IconButton(
                 onPressed: () {
                   game.overlays.remove('GameOverMenu');
-                  // game.resumeEngine();
+                  AudioManager.instance.stopBgm();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const MainMenu(),
+                    ),
+                  );
                 },
                 icon: Image.asset('assets/images/Menu/Buttons/Home.png'),
               ),

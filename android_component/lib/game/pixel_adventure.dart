@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:android_component/audio/audio_manager.dart';
 import 'package:android_component/game/components/jump_button.dart';
 import 'package:android_component/game/components/level.dart';
 import 'package:android_component/game/components/player.dart';
@@ -17,6 +18,9 @@ class PixelAdventure extends FlameGame
   bool showControls = true;
   int correctAnswer = 0;
   int wrongAnswer = 0;
+  bool isSoundOn;
+
+  PixelAdventure({required this.isSoundOn});
 
   Player player = Player(mainCharacter: 'Mask Dude');
   late JoystickComponent joystick;
@@ -24,11 +28,12 @@ class PixelAdventure extends FlameGame
   @override
   FutureOr<void> onLoad() async {
     await images.loadAllImages();
+    AudioManager.instance.setSound(isSoundOn);
 
     final world1 = Level(
       player: player,
       levelName: 'level1',
-      allowedTime: 1,
+      allowedTime: 10,
     );
 
     cam = CameraComponent.withFixedResolution(

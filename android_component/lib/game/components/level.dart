@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:android_component/audio/audio_manager.dart';
 import 'package:android_component/game/components/collision_block.dart';
 import 'package:android_component/game/components/platforms.dart';
 import 'package:android_component/game/components/player.dart';
@@ -79,6 +80,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
     }
     player.collisionBlocks = collisionBlocks;
     game.overlays.add('PauseButton');
+    AudioManager.instance.startBgm('Bgm.wav');
     reload();
     return super.onLoad();
   }
@@ -101,10 +103,12 @@ class Level extends World with HasGameRef<PixelAdventure> {
       }
       if (changeQuestion) {
         if (player.onCorrectPlatform) {
+          AudioManager.instance.playSfx('Correct.wav');
           questionText.textRenderer = correctAnswerFontStyle;
           questionText.text = "Correct Answer";
           game.correctAnswer += 1;
         } else {
+          AudioManager.instance.playSfx('Wrong.wav');
           questionText.textRenderer = wrongAnswerFontStyle;
           questionText.text = "Wrong Answer";
           game.wrongAnswer += 1;
