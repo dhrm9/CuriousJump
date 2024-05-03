@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   flame: ^1.17.0
   flame_tiled: ^1.19.0
+  flame_audio: ^2.10.1
 
 dev_dependencies:
   flutter_test:
@@ -72,10 +73,8 @@ flutter:
     - assets/images/Main Characters/Pink Man/
     - assets/images/Main Characters/Virtual Guy/
     - assets/quiz/quiz.json
-    - assets/images/Menu/Buttons/Pause.png
-    - assets/images/Menu/Buttons/PlayN.png
-    - assets/images/Menu/Buttons/Restart.png
     - assets/images/Menu/Buttons/
+    - assets/audio/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

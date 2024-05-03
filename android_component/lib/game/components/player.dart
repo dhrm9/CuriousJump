@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:android_component/audio/audio_manager.dart';
 import 'package:android_component/game/components/collision_block.dart';
 import 'package:android_component/game/components/platforms.dart';
 import 'package:android_component/game/components/player_hitbox.dart';
@@ -200,6 +201,7 @@ class Player extends SpriteAnimationGroupComponent
       }
     }
     if (other is Saw) {
+      AudioManager.instance.playSfx('Hit.wav');
       _respawn();
     }
     super.onCollision(intersectionPoints, other);
@@ -234,6 +236,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _playerJump(double dt) {
+    AudioManager.instance.playSfx('Jump.wav');
     velocity.y = -jumpForce;
     position.y += velocity.y * dt;
     isOnGround = false;
