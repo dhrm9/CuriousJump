@@ -1,0 +1,35 @@
+{
+    "type": "Fruit",
+    "questions": [
+      {
+        "question": "Which of them is Apple?",
+        "options": [
+          "Apple",
+          "Banana",
+          "Coconut",
+          "Strawberry"
+        ],
+        "correctAnswer": "0"
+      },
+      {
+        "question": "Which of them is Orange?",
+        "options": [
+          "Lemon",
+          "Orange",
+          "Pear",
+          "Watermelon"
+        ],
+        "correctAnswer": "1"
+      },
+      {
+        "question": "Which of them is Peach?",
+        "options": [
+          "Apple",
+          "Strawberry",
+          "Starfruit",
+          "Peach"
+        ],
+        "correctAnswer": "3"
+      }
+    ]
+  }

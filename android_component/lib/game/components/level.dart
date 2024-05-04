@@ -24,7 +24,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
   late List<int> questionIndexSet;
   late TextBoxComponent questionText;
   late TextBoxComponent timerText;
-  List<TextBoxComponent> options = [];
+  List<Component> options = [];
   List<CollisionBlock> collisionBlocks = [];
   List<Platform> platforms = [];
   List<Saw> saws = [];
@@ -34,6 +34,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
   bool loadingNewLevel = false;
   double remainingTime = 0;
   Random random = Random();
+  QuizType quizType = QuizType.fruits;
 
   Level({
     required this.levelName,
@@ -43,7 +44,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
 
   @override
   FutureOr<void> onLoad() async {
-    quiz = await QuizReader.readJson("assets/quiz/quiz.json");
+    quiz = await QuizReader.readJson("assets/quiz/fruit_quiz.json");
     questionIndexSet = List.generate(quiz.questions.length, (index) => index);
 
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
@@ -166,7 +167,16 @@ class Level extends World with HasGameRef<PixelAdventure> {
       final optionList = question.options;
 
       for (int i = 0; i < optionList.length; i++) {
-        options[i].text = optionList[i];
+        if (quizType == QuizType.fruits) {
+          (options[i] as SpriteComponent).sprite = Sprite(game.images.fromCache('Fruits/${optionList[i]}.png'));
+        }else if(quizType == QuizType.animal){
+          (options[i] as SpriteComponent).sprite = Sprite(game.images.fromCache('Animals/${optionList[i]}.png'));
+        } else if(quizType == QuizType.vegetables){
+          (options[i] as SpriteComponent).sprite = Sprite(game.images.fromCache('Vegetables/${optionList[i]}.png'));
+        }
+        else {
+          (options[i] as TextBoxComponent).text = optionList[i];
+        }
       }
 
       player.reset();
@@ -203,14 +213,23 @@ class Level extends World with HasGameRef<PixelAdventure> {
             add(questionText);
             break;
           case 'Options':
-            final option = TextBoxComponent(
-              text: "",
-              textRenderer: optionTextFontStyle,
-              position: Vector2(text.x, text.y),
-              size: Vector2(text.width, text.height),
-              align: Anchor.center,
-              boxConfig: TextBoxConfig(maxWidth: text.width),
-            );
+            dynamic option;
+            if (quizType == QuizType.fruits || quizType == QuizType.animal || quizType == QuizType.vegetables) {
+              option = SpriteComponent.fromImage(
+                game.images.fromCache('Fruits/Apple.png'),
+                position: Vector2(text.x, text.y),
+              );
+            } else {
+              option = TextBoxComponent(
+                text: "",
+                textRenderer: optionTextFontStyle,
+                position: Vector2(text.x, text.y),
+                size: Vector2(text.width, text.height),
+                align: Anchor.center,
+                boxConfig: TextBoxConfig(maxWidth: text.width),
+              );
+            }
+
             add(option);
             options.add(option);
             break;

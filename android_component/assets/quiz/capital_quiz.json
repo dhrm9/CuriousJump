@@ -1,0 +1,55 @@
+{
+  "type": "Capital",
+  "questions": [
+    {
+      "question": "What is the capital of France?",
+      "options": [
+        "London",
+        "Paris",
+        "Berlin",
+        "Rome"
+      ],
+      "correctAnswer": "1"
+    },
+    {
+      "question": "What is the capital of India?",
+      "options": [
+        "Delhi",
+        "Mumbai",
+        "Kolkata",
+        "Luck Now"
+      ],
+      "correctAnswer": "0"
+    },
+    {
+      "question": "Which country has Kahtmandu as its capital?",
+      "options": [
+        "Bangla Desh",
+        "Sri lanka",
+        "Bhutan",
+        "Nepal"
+      ],
+      "correctAnswer": "3"
+    },
+    {
+      "question": "Which city is the capital of Sri Lanka?",
+      "options": [
+        "Colom bo",
+        "Kandy",
+        "Galle",
+        "Jaffna"
+      ],
+      "correctAnswer": "0"
+    },
+    {
+      "question": "What is the capital of Bangladesh?",
+      "options": [
+        "Dhaka",
+        "Chitta gong",
+        "Khulna",
+        "Raj shahi"
+      ],
+      "correctAnswer": "0"
+    }
+  ]
+}

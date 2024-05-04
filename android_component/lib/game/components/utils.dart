@@ -89,24 +89,46 @@ Widget pauseMenuBuilder(BuildContext context, PixelAdventure game) {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              IconButton(
-                onPressed: () {
-                  AudioManager.instance.resumeBgm();
-                  game.overlays.remove('PauseMenu');
-                  game.resumeEngine();
-                },
-                icon: Image.asset('assets/images/Menu/Buttons/PlayN.png'),
-              ),
-              IconButton(
-                onPressed: () {
-                  game.overlays.remove('PauseMenu');
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const MainMenu(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      AudioManager.instance.resumeBgm();
+                      game.overlays.remove('PauseMenu');
+                      game.resumeEngine();
+                    },
+                    icon: Image.asset('assets/images/Menu/Buttons/PlayN.png'),
+                  ),
+                  const Text(
+                    "Resume",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
                     ),
-                  );
-                },
-                icon: Image.asset('assets/images/Menu/Buttons/Home.png'),
+                  ),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      game.overlays.remove('PauseMenu');
+                      game.overlays.add('GameOverMenu');
+                    },
+                    icon: Image.asset('assets/images/Menu/Buttons/Cross.png'),
+                  ),
+                  const Text(
+                    "End",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
