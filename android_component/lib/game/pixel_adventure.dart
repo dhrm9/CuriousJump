@@ -4,6 +4,7 @@ import 'package:android_component/audio/audio_manager.dart';
 import 'package:android_component/game/components/jump_button.dart';
 import 'package:android_component/game/components/level.dart';
 import 'package:android_component/game/components/player.dart';
+import 'package:android_component/quiz/quiz.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -19,8 +20,10 @@ class PixelAdventure extends FlameGame
   int correctAnswer = 0;
   int wrongAnswer = 0;
   bool isSoundOn;
+  QuizLevel quizLevel;
+  QuizType quizType;
 
-  PixelAdventure({required this.isSoundOn});
+  PixelAdventure({required this.isSoundOn , required this.quizLevel , required this.quizType});
 
   Player player = Player(mainCharacter: 'Mask Dude');
   late JoystickComponent joystick;
@@ -34,6 +37,7 @@ class PixelAdventure extends FlameGame
       player: player,
       levelName: 'level1',
       allowedTime: 10,
+      quizType: quizType
     );
 
     cam = CameraComponent.withFixedResolution(
@@ -68,7 +72,7 @@ class PixelAdventure extends FlameGame
           images.fromCache('HUD/joystick.png'),
         ),
       ),
-      margin: const EdgeInsets.only(left: 4, bottom: 32),
+      margin: const EdgeInsets.only(left: 32, bottom: 32),
     );
     add(joystick);
   }

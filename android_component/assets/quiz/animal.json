@@ -1,0 +1,35 @@
+{
+    "type": "Animal",
+    "questions": [
+      {
+        "question": "Which of them is a Cat?",
+        "options": [
+          "Frog",
+          "Cat",
+          "Monkey",
+          "Turtle"
+        ],
+        "correctAnswer": "1"
+      },
+      {
+        "question": "Which of them lives on trees ?",
+        "options": [
+          "Monkey",
+          "Dinosaur",
+          "Hippo",
+          "Hyena"
+        ],
+        "correctAnswer": "0"
+      },
+      {
+        "question": "I look like Star and I am a fish . Who am I?",
+        "options": [
+          "Cat",
+          "Frog",
+          "Starfish",
+          "Turtle"
+        ],
+        "correctAnswer": "2"
+      }
+    ]
+  }

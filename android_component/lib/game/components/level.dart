@@ -34,17 +34,37 @@ class Level extends World with HasGameRef<PixelAdventure> {
   bool loadingNewLevel = false;
   double remainingTime = 0;
   Random random = Random();
-  QuizType quizType = QuizType.fruits;
+  QuizType quizType;
 
   Level({
     required this.levelName,
     required this.player,
     required this.allowedTime,
+    required this.quizType
   });
 
   @override
   FutureOr<void> onLoad() async {
-    quiz = await QuizReader.readJson("assets/quiz/fruit_quiz.json");
+    switch(quizType){
+      case QuizType.animal:
+        quiz = await QuizReader.readJson("assets/quiz/animal.json");
+      break;
+      case QuizType.fruits:
+        quiz = await QuizReader.readJson("assets/quiz/fruit.json");
+      break;
+      case QuizType.vegetables:
+        quiz = await QuizReader.readJson("assets/quiz/vegetable.json");
+      break;
+      case QuizType.maths:
+        quiz = await QuizReader.readJson("assets/quiz/maths.json");
+      break;
+      case QuizType.capital:
+        quiz = await QuizReader.readJson("assets/quiz/capital.json");
+      break;
+      default:
+      break;
+    }
+    
     questionIndexSet = List.generate(quiz.questions.length, (index) => index);
 
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
