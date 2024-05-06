@@ -8,4 +8,12 @@ class Question {
     required this.options,
     required this.correctAnswer,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'text': text,
+      'options': options,
+      'correctAnswer': correctAnswer,
+    };
+  }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:android_component/audio/audio_manager.dart';
+import 'package:android_component/firebase/database.dart';
 import 'package:android_component/game/components/collision_block.dart';
 import 'package:android_component/game/components/platforms.dart';
 import 'package:android_component/game/components/player.dart';
@@ -64,6 +65,8 @@ class Level extends World with HasGameRef<PixelAdventure> {
       default:
       break;
     }
+
+    Database.saveToFirestore(Quiz.getQuizType(quizType), quiz.questionsToMapList());
     
     questionIndexSet = List.generate(quiz.questions.length, (index) => index);
 

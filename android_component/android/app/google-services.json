@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "716419996392",
+    "project_id": "curiousjump",
+    "storage_bucket": "curiousjump.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716419996392:android:0dfdbf7a11f06e1778075d",
+        "android_client_info": {
+          "package_name": "com.example.android_component"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2w98V5CayWijZJ2Kcx5vMKHFuac4dGMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
