@@ -117,7 +117,7 @@ class _MainMenuState extends State<MainMenu> {
                               IconButton(
                                 onPressed: () {
                                   Navigator.of(context)
-                                      .pushReplacement(MaterialPageRoute(
+                                      .push(MaterialPageRoute(
                                     builder: (context) => GameScreen(
                                       isSoundOn: isSoundOn,
                                       quizLevel: selectedLevel,

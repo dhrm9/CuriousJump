@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:android_component/game/pixel_adventure.dart';
+import 'package:android_component/game/curious_jump.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
-class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure> {
+class Saw extends SpriteAnimationComponent with HasGameRef<CuriousJump> {
   // ignore: use_super_parameters
 
   final bool isVertical;

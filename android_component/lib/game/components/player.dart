@@ -6,7 +6,7 @@ import 'package:android_component/game/components/platforms.dart';
 import 'package:android_component/game/components/player_hitbox.dart';
 import 'package:android_component/game/components/saw.dart';
 import 'package:android_component/game/components/utils.dart';
-import 'package:android_component/game/pixel_adventure.dart';
+import 'package:android_component/game/curious_jump.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +14,7 @@ import 'package:flutter/services.dart';
 enum PlayerState { idle, running, jumping, falling, hit, appearing }
 
 class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<PixelAdventure>, CollisionCallbacks, KeyboardHandler {
+    with HasGameRef<CuriousJump>, CollisionCallbacks, KeyboardHandler {
   String mainCharacter;
   // ignore: use_super_parameters
   Player({
@@ -80,6 +80,7 @@ class Player extends SpriteAnimationGroupComponent
         _checkHorizontalCollisions();
         _applyGravity(fixedDeltaTime);
         _checkVerticalCollision();
+        if (isOnGround == true) onCorrectPlatform = false;
       }
       accumulatedTime -= fixedDeltaTime;
     }
@@ -191,7 +192,7 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-      // print("Collision");
+    // print("Collision");
 
     if (other is Platform) {
       if (other.isCorrect) {

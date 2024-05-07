@@ -2,20 +2,20 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:android_component/audio/audio_manager.dart';
-import 'package:android_component/firebase/database.dart';
+import 'package:android_component/models/database.dart';
 import 'package:android_component/game/components/collision_block.dart';
 import 'package:android_component/game/components/platforms.dart';
 import 'package:android_component/game/components/player.dart';
 import 'package:android_component/game/components/saw.dart';
 import 'package:android_component/game/components/utils.dart';
-import 'package:android_component/game/pixel_adventure.dart';
+import 'package:android_component/game/curious_jump.dart';
 import 'package:android_component/quiz/question.dart';
 import 'package:android_component/quiz/quiz.dart';
 import 'package:android_component/quiz/quiz_reader.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
-class Level extends World with HasGameRef<PixelAdventure> {
+class Level extends World with HasGameRef<CuriousJump> {
   late TiledComponent level;
 
   final String levelName;
@@ -37,37 +37,37 @@ class Level extends World with HasGameRef<PixelAdventure> {
   Random random = Random();
   QuizType quizType;
 
-  Level({
-    required this.levelName,
-    required this.player,
-    required this.allowedTime,
-    required this.quizType
-  });
+  Level(
+      {required this.levelName,
+      required this.player,
+      required this.allowedTime,
+      required this.quizType});
 
   @override
   FutureOr<void> onLoad() async {
-    switch(quizType){
+    switch (quizType) {
       case QuizType.animal:
         quiz = await QuizReader.readJson("assets/quiz/animal.json");
-      break;
+        break;
       case QuizType.fruits:
         quiz = await QuizReader.readJson("assets/quiz/fruit.json");
-      break;
+        break;
       case QuizType.vegetables:
         quiz = await QuizReader.readJson("assets/quiz/vegetable.json");
-      break;
+        break;
       case QuizType.maths:
         quiz = await QuizReader.readJson("assets/quiz/maths.json");
-      break;
+        break;
       case QuizType.capital:
         quiz = await QuizReader.readJson("assets/quiz/capital.json");
-      break;
+        break;
       default:
-      break;
+        break;
     }
 
-    Database.saveToFirestore(Quiz.getQuizType(quizType), quiz.questionsToMapList());
-    
+    Database.saveToFirestore(
+        Quiz.getQuizType(quizType), quiz.questionsToMapList());
+
     questionIndexSet = List.generate(quiz.questions.length, (index) => index);
 
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
@@ -104,6 +104,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
     }
     player.collisionBlocks = collisionBlocks;
     game.overlays.add('PauseButton');
+    game.overlays.add('SureButton');
     AudioManager.instance.startBgm('Bgm.wav');
     reload();
     return super.onLoad();
@@ -142,6 +143,10 @@ class Level extends World with HasGameRef<PixelAdventure> {
         Future.delayed(const Duration(milliseconds: 2000), () => reload());
       }
     }
+  }
+
+  void setRemainingTime(double newRem){
+    remainingTime = newRem;
   }
 
   void _spawnEntities() {
@@ -191,13 +196,15 @@ class Level extends World with HasGameRef<PixelAdventure> {
 
       for (int i = 0; i < optionList.length; i++) {
         if (quizType == QuizType.fruits) {
-          (options[i] as SpriteComponent).sprite = Sprite(game.images.fromCache('Fruits/${optionList[i]}.png'));
-        }else if(quizType == QuizType.animal){
-          (options[i] as SpriteComponent).sprite = Sprite(game.images.fromCache('Animals/${optionList[i]}.png'));
-        } else if(quizType == QuizType.vegetables){
-          (options[i] as SpriteComponent).sprite = Sprite(game.images.fromCache('Vegetables/${optionList[i]}.png'));
-        }
-        else {
+          (options[i] as SpriteComponent).sprite =
+              Sprite(game.images.fromCache('Fruits/${optionList[i]}.png'));
+        } else if (quizType == QuizType.animal) {
+          (options[i] as SpriteComponent).sprite =
+              Sprite(game.images.fromCache('Animals/${optionList[i]}.png'));
+        } else if (quizType == QuizType.vegetables) {
+          (options[i] as SpriteComponent).sprite =
+              Sprite(game.images.fromCache('Vegetables/${optionList[i]}.png'));
+        } else {
           (options[i] as TextBoxComponent).text = optionList[i];
         }
       }
@@ -237,7 +244,9 @@ class Level extends World with HasGameRef<PixelAdventure> {
             break;
           case 'Options':
             dynamic option;
-            if (quizType == QuizType.fruits || quizType == QuizType.animal || quizType == QuizType.vegetables) {
+            if (quizType == QuizType.fruits ||
+                quizType == QuizType.animal ||
+                quizType == QuizType.vegetables) {
               option = SpriteComponent.fromImage(
                 game.images.fromCache('Fruits/Apple.png'),
                 position: Vector2(text.x, text.y),
