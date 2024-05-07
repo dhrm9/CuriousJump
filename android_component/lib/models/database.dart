@@ -3,8 +3,7 @@ import 'package:android_component/quiz/quiz.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Database {
-
- static QuizType parseQuizType(String quizTypeString) {
+  static QuizType parseQuizType(String quizTypeString) {
     switch (quizTypeString) {
       case 'Animal':
         return QuizType.animal;
@@ -36,12 +35,13 @@ class Database {
     }
   }
 
-  static Future<Quiz?> fetchQuizFromFirestore(String quizType) async {
+  static Future<Quiz?> fetchQuizFromFirestore(String quizType , String quizLevel) async {
     try {
       final firestore = FirebaseFirestore.instance;
       final querySnapshot = await firestore
           .collection('quizzes')
           .where('type', isEqualTo: quizType)
+          .where('level', isEqualTo: quizLevel)
           .get();
 
       if (querySnapshot.docs.isEmpty) {

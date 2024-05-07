@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:android_component/game/pixel_adventure.dart';
+import 'package:android_component/game/curious_jump.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
 class JumpButton extends SpriteComponent
-    with HasGameRef<PixelAdventure>, TapCallbacks {
+    with HasGameRef<CuriousJump>, TapCallbacks {
   JumpButton();
 
   final margin = 32;
@@ -13,7 +13,7 @@ class JumpButton extends SpriteComponent
 
   @override
   FutureOr<void> onLoad() {
-    sprite = Sprite(game.images.fromCache('HUD/jumpButton.png'));
+    sprite = Sprite(game.images.fromCache('Menu/Buttons/Jump.png'));
     position = Vector2(
       game.size.x - margin - buttonSize,
       game.size.y - margin - buttonSize,

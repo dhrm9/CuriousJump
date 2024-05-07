@@ -49,6 +49,4 @@ class QuizReader {
       rethrow; // Re-throw the exception for handling at the caller's level
     }
   }
-
- 
 }

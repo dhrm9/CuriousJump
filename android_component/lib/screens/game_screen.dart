@@ -1,5 +1,5 @@
 import 'package:android_component/game/components/utils.dart';
-import 'package:android_component/game/pixel_adventure.dart';
+import 'package:android_component/game/curious_jump.dart';
 import 'package:android_component/quiz/quiz.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/widgets.dart';
@@ -16,8 +16,8 @@ class GameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GameWidget<PixelAdventure>(
-      game: PixelAdventure(
+    return GameWidget<CuriousJump>(
+      game: CuriousJump(
         isSoundOn: isSoundOn,
         quizLevel: quizLevel,
         quizType: quizType,
@@ -26,6 +26,7 @@ class GameScreen extends StatelessWidget {
         'PauseButton': pauseButtonBuilder,
         'PauseMenu': pauseMenuBuilder,
         'GameOverMenu': gameOverMenuBuilder,
+        'SureButton': sureButtonBuilder,
       },
     );
   }

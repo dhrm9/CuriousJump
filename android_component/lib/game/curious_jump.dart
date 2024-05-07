@@ -10,7 +10,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
 
-class PixelAdventure extends FlameGame
+class CuriousJump extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection, DragCallbacks {
   @override
   Color backgroundColor() => const Color(0xFF201e30);
@@ -22,8 +22,9 @@ class PixelAdventure extends FlameGame
   bool isSoundOn;
   QuizLevel quizLevel;
   QuizType quizType;
+  late Level world1;
 
-  PixelAdventure({required this.isSoundOn , required this.quizLevel , required this.quizType});
+  CuriousJump({required this.isSoundOn , required this.quizLevel , required this.quizType});
 
   Player player = Player(mainCharacter: 'Mask Dude');
   late JoystickComponent joystick;
@@ -33,7 +34,7 @@ class PixelAdventure extends FlameGame
     await images.loadAllImages();
     AudioManager.instance.setSound(isSoundOn);
 
-    final world1 = Level(
+    world1 = Level(
       player: player,
       levelName: 'level1',
       allowedTime: 10,
@@ -63,6 +64,7 @@ class PixelAdventure extends FlameGame
   void addJoystick() {
     joystick = JoystickComponent(
       knob: SpriteComponent(
+        priority: 13,
         sprite: Sprite(
           images.fromCache('HUD/knob.png'),
         ),

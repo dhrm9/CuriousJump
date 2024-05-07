@@ -1,5 +1,5 @@
 import 'package:android_component/audio/audio_manager.dart';
-import 'package:android_component/game/pixel_adventure.dart';
+import 'package:android_component/game/curious_jump.dart';
 import 'package:android_component/screens/main_menu.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +59,7 @@ final correctAnswerFontStyle = TextPaint(
   ),
 );
 
-Widget pauseButtonBuilder(BuildContext context, PixelAdventure game) {
+Widget pauseButtonBuilder(BuildContext context, CuriousJump game) {
   return IconButton(
     onPressed: () {
       AudioManager.instance.pauseBgm();
@@ -70,7 +70,21 @@ Widget pauseButtonBuilder(BuildContext context, PixelAdventure game) {
   );
 }
 
-Widget pauseMenuBuilder(BuildContext context, PixelAdventure game) {
+Widget sureButtonBuilder(BuildContext context, CuriousJump game) {
+  return Positioned(
+    top: 10,
+    right: 10,
+    child: IconButton(
+      onPressed: () {
+        // game.world1.setRemainingTime(0);
+        game.world1.timer = Timer(0);
+      },
+      icon: Image.asset('assets/images/Menu/Buttons/Sure.png'),
+    ),
+  );
+}
+
+Widget pauseMenuBuilder(BuildContext context, CuriousJump game) {
   return Center(
     child: Card(
       color: Colors.black.withOpacity(0.8),
@@ -138,7 +152,7 @@ Widget pauseMenuBuilder(BuildContext context, PixelAdventure game) {
   );
 }
 
-Widget gameOverMenuBuilder(BuildContext context, PixelAdventure game) {
+Widget gameOverMenuBuilder(BuildContext context, CuriousJump game) {
   return Center(
     child: Card(
       color: Colors.black.withOpacity(0.8),
@@ -171,13 +185,6 @@ Widget gameOverMenuBuilder(BuildContext context, PixelAdventure game) {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              IconButton(
-                onPressed: () {
-                  game.overlays.remove('GameOverMenu');
-                  // game.resumeEngine();
-                },
-                icon: Image.asset('assets/images/Menu/Buttons/Restart.png'),
-              ),
               IconButton(
                 onPressed: () {
                   game.overlays.remove('GameOverMenu');
