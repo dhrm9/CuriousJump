@@ -4,6 +4,7 @@ import 'package:android_component/audio/audio_manager.dart';
 import 'package:android_component/game/components/jump_button.dart';
 import 'package:android_component/game/components/level.dart';
 import 'package:android_component/game/components/player.dart';
+import 'package:android_component/models/player_data.dart';
 import 'package:android_component/quiz/quiz.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -22,9 +23,10 @@ class CuriousJump extends FlameGame
   bool isSoundOn;
   QuizLevel quizLevel;
   QuizType quizType;
+  PlayerData playerData;
   late Level world1;
 
-  CuriousJump({required this.isSoundOn , required this.quizLevel , required this.quizType});
+  CuriousJump({required this.isSoundOn , required this.quizLevel , required this.quizType , required this.playerData});
 
   Player player = Player(mainCharacter: 'Mask Dude');
   late JoystickComponent joystick;
