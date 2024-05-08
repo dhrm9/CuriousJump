@@ -66,7 +66,7 @@ class Level extends World with HasGameRef<CuriousJump> {
     }
 
     Database.saveToFirestore(
-        Quiz.getQuizType(quizType), quiz.questionsToMapList());
+        Quiz.parseQuizType(quizType), quiz.questionsToMapList());
 
     questionIndexSet = List.generate(quiz.questions.length, (index) => index);
 
