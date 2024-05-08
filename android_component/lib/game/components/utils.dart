@@ -2,7 +2,6 @@ import 'package:android_component/audio/audio_manager.dart';
 import 'package:android_component/game/curious_jump.dart';
 import 'package:android_component/models/database.dart';
 import 'package:android_component/quiz/quiz.dart';
-import 'package:android_component/screens/main_menu.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
@@ -223,12 +222,7 @@ Widget gameOverMenuBuilder(BuildContext context, CuriousJump game) {
                         game.playerData.playerName, game.playerData.scores);
                     game.overlays.remove('GameOverMenu');
                     AudioManager.instance.stopBgm();
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            MainMenu(playerData: game.playerData),
-                      ),
-                    );
+                    Navigator.of(context).pop();
                   },
                   icon: Image.asset('assets/images/Menu/Buttons/Home.png'),
                 ),
