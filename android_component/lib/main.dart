@@ -8,16 +8,24 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
 void main() async {
+  // Ensure Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Initialize Hive for local storage
   await Hive.initFlutter();
   Hive.registerAdapter(PlayerDataAdapter());
   await Hive.openBox<PlayerData>('playerData');
 
+  // Set up Flame for game development
   await Flame.device.fullScreen();
   await Flame.device.setLandscape();
+
+  // Initialize audio manager and load game sounds
   AudioManager.instance.init([
     'Bgm.wav',
     'Click.wav',
@@ -27,16 +35,18 @@ void main() async {
     'Wrong.wav'
   ]);
 
+  // Run the Flutter app
   runApp(const MyApp());
 }
 
+// Main application widget
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pixel Adventure',
+      title: 'Curious Jump',
       theme: ThemeData(
         fontFamily: 'Minecraftia',
         primarySwatch: Colors.blue,

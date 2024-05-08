@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 
 class Database {
+  // Method to parse quiz type from string
   static QuizType parseQuizType(String quizTypeString) {
     switch (quizTypeString) {
       case 'Animal':
@@ -23,39 +24,42 @@ class Database {
     }
   }
 
+  // Method to store player data in local storage
   static void storePlayerData(String playerName, Map<String, int> scores) async {
     final box = await Hive.openBox<PlayerData>('playerData');
     final playerData = PlayerData(playerName: playerName, scores: scores);
     box.put(playerName, playerData);
   }
 
+  // Method to get player data from local storage
   static PlayerData getPlayerData(String playerName) {
     final box = Hive.box<PlayerData>('playerData');
     final playerData = box.get(playerName);
-    if(playerData == null){
+    if (playerData == null) {
+      // If player data is not found, return default data
       return PlayerData(playerName: playerName, scores: {
-        'AnimalEasy':-100,
-        'AnimalMedium':-100,
-        'AnimalHard':-100,
-        'FruitEasy':-100,
-        'FruitMedium':-100,
-        'FruitHard':-100,
-        'MathsEasy':-100,
-        'MathsMedium':-100,
-        'MathsHard':-100,
-        'CapitalEasy':-100,
-        'CapitalMedium':-100,
-        'CapitalHard':-100,
-        'VegetableEasy':-100,
-        'VegetableMedium':-100,
-        'VegetableHard':-100,
+        'AnimalEasy': -100,
+        'AnimalMedium': -100,
+        'AnimalHard': -100,
+        'FruitEasy': -100,
+        'FruitMedium': -100,
+        'FruitHard': -100,
+        'MathsEasy': -100,
+        'MathsMedium': -100,
+        'MathsHard': -100,
+        'CapitalEasy': -100,
+        'CapitalMedium': -100,
+        'CapitalHard': -100,
+        'VegetableEasy': -100,
+        'VegetableMedium': -100,
+        'VegetableHard': -100,
       });
-    }
-    else{
+    } else {
       return playerData;
     }
   }
 
+  // Method to save quiz data to Firestore
   static Future<void> saveToFirestore(
       String quizType, List<Map<String, dynamic>> questions) async {
     try {
@@ -70,7 +74,8 @@ class Database {
     }
   }
 
-  static Future<Quiz?> fetchQuizFromFirestore(
+  // Method to fetch quiz data from Firestore
+  static Future<Quiz> fetchQuizFromFirestore(
       String quizType, String quizLevel) async {
     try {
       final firestore = FirebaseFirestore.instance;
@@ -82,7 +87,7 @@ class Database {
 
       if (querySnapshot.docs.isEmpty) {
         print('No quiz found for type: $quizType');
-        return null;
+        return Quiz(type: QuizType.animal, questions: []);
       }
 
       final List<Question> questions = [];
@@ -92,14 +97,14 @@ class Database {
         questions.add(Question(
           text: question['text'],
           options: List<String>.from(question['options']),
-          correctAnswer: question['correctAnswer'],
+          correctAnswer: int.parse(question['correctAnswer']),
         ));
       }
       final parsedQuizType = parseQuizType(quizType);
       return Quiz(type: parsedQuizType, questions: questions);
     } catch (e) {
       print('Error fetching quiz data from Firestore: $e');
-      return null;
+      return Quiz(type: QuizType.animal, questions: []);
     }
   }
 }

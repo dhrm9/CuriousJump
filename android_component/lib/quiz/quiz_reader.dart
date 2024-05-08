@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:android_component/quiz/question.dart';
 import 'package:android_component/quiz/quiz.dart';
 import 'package:flutter/services.dart';
 
 class QuizReader {
+  // Method to parse quiz type from string
   static QuizType parseQuizType(String quizTypeString) {
     switch (quizTypeString) {
       case 'Animal':
@@ -23,13 +23,16 @@ class QuizReader {
     }
   }
 
+  // Method to read quiz data from a JSON file
   static Future<Quiz> readJson(String filePath) async {
     try {
-      // final file = await File(filePath);
+      // Load JSON string from the file
       final jsonString = await rootBundle.loadString(filePath);
 
+      // Decode JSON string into a map
       final jsonMap = json.decode(jsonString);
 
+      // Parse quiz type from JSON map
       final QuizType quizType = parseQuizType(jsonMap['type']);
 
       // Parse questions from JSON map
@@ -44,9 +47,9 @@ class QuizReader {
       // Create and return Quiz object
       return Quiz(type: quizType, questions: questions);
     } catch (e) {
-      // ignore: avoid_print
       print('Error reading JSON file: $e');
-      rethrow; // Re-throw the exception for handling at the caller's level
+      // Re-throw the exception for handling at the caller's level
+      rethrow;
     }
   }
 }

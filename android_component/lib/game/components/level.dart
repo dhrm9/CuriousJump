@@ -11,7 +11,6 @@ import 'package:android_component/game/components/utils.dart';
 import 'package:android_component/game/curious_jump.dart';
 import 'package:android_component/quiz/question.dart';
 import 'package:android_component/quiz/quiz.dart';
-import 'package:android_component/quiz/quiz_reader.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
@@ -36,37 +35,42 @@ class Level extends World with HasGameRef<CuriousJump> {
   double remainingTime = 0;
   Random random = Random();
   QuizType quizType;
+  QuizLevel quizLevel;
 
   Level(
       {required this.levelName,
       required this.player,
       required this.allowedTime,
-      required this.quizType});
+      required this.quizType,
+      required this.quizLevel
+      });
 
   @override
   FutureOr<void> onLoad() async {
-    switch (quizType) {
-      case QuizType.animal:
-        quiz = await QuizReader.readJson("assets/quiz/animal.json");
-        break;
-      case QuizType.fruits:
-        quiz = await QuizReader.readJson("assets/quiz/fruit.json");
-        break;
-      case QuizType.vegetables:
-        quiz = await QuizReader.readJson("assets/quiz/vegetable.json");
-        break;
-      case QuizType.maths:
-        quiz = await QuizReader.readJson("assets/quiz/maths.json");
-        break;
-      case QuizType.capital:
-        quiz = await QuizReader.readJson("assets/quiz/capital.json");
-        break;
-      default:
-        break;
-    }
+    // switch (quizType) {
+    //   case QuizType.animal:
+    //     quiz = await QuizReader.readJson("assets/quiz/animal.json");
+    //     break;
+    //   case QuizType.fruits:
+    //     quiz = await QuizReader.readJson("assets/quiz/fruit.json");
+    //     break;
+    //   case QuizType.vegetables:
+    //     quiz = await QuizReader.readJson("assets/quiz/vegetable.json");
+    //     break;
+    //   case QuizType.maths:
+    //     quiz = await QuizReader.readJson("assets/quiz/maths.json");
+    //     break;
+    //   case QuizType.capital:
+    //     quiz = await QuizReader.readJson("assets/quiz/capital.json");
+    //     break;
+    //   default:
+    //     break;
+    // }
 
-    Database.saveToFirestore(
-        Quiz.parseQuizType(quizType), quiz.questionsToMapList());
+    // Database.saveToFirestore(
+    //     Quiz.parseQuizType(quizType), quiz.questionsToMapList());
+
+    quiz = await Database.fetchQuizFromFirestore(Quiz.parseQuizType(quizType), Quiz.parseQuizLevel(quizLevel));
 
     questionIndexSet = List.generate(quiz.questions.length, (index) => index);
 
