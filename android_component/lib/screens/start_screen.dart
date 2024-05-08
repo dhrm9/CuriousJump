@@ -2,7 +2,6 @@ import 'package:android_component/models/database.dart';
 import 'package:android_component/models/player_data.dart';
 import 'package:android_component/screens/main_menu.dart';
 import 'package:flutter/material.dart';
-// import 'package:hive/hive.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
@@ -13,12 +12,12 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen> {
   final TextEditingController _nameController = TextEditingController();
-  String? playerName;
+  String? playerName; // Player's name entered in the text field
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF201e30),
+      backgroundColor: const Color(0xFF201e30), // Background color
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(
@@ -30,6 +29,7 @@ class _StartScreenState extends State<StartScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Text field for entering player's name
               TextField(
                 controller: _nameController,
                 decoration: const InputDecoration(
@@ -39,16 +39,18 @@ class _StartScreenState extends State<StartScreen> {
                 style: const TextStyle(color: Colors.white),
               ),
               const SizedBox(height: 20),
+              // Button to continue to the main menu
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    playerName = _nameController.text;
+                    playerName = _nameController.text; // Get player's name from text field
                   });
-                  getPlayerData(playerName!);
+                  getPlayerData(playerName!); // Get player data from database
                 },
                 child: const Text('Continue'),
               ),
               const SizedBox(height: 20),
+              // Display player's name (if entered)
               // playerName != null
               //     ? Text('Player Name: $playerName', style: const TextStyle(color: Colors.white),)
               //     : Container(),
@@ -59,8 +61,11 @@ class _StartScreenState extends State<StartScreen> {
     );
   }
 
+  // Function to get player data from the database
   void getPlayerData(String playerName) async {
+    // Get player data from the database using the player's name
     PlayerData playerData = Database.getPlayerData(playerName);
+    // Navigate to the main menu screen with the player data
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => MainMenu(playerData:playerData),
