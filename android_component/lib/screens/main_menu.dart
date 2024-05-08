@@ -158,7 +158,14 @@ class _MainMenuState extends State<MainMenu> {
                             ],
                           ),
                           Text(
-                            "Player, ${widget.playerData.playerName}",
+                            "Player: ${widget.playerData.playerName}",
+                            style: const TextStyle(
+                              fontSize: 30.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            "Highscore: ${getHighScore()}",
                             style: const TextStyle(
                               fontSize: 30.0,
                               color: Colors.white,
@@ -291,15 +298,17 @@ class _MainMenuState extends State<MainMenu> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          selectedLevel == QuizLevel.medium?
-                          'You cannot start Medium until you finish Easy with a score of at least 8.':
-                          'You cannot start Hard until you finish Medium with a score of at least 8.',
+                          selectedLevel == QuizLevel.medium
+                              ? 'You cannot start Medium until you finish Easy with a score of at least 8.'
+                              : 'You cannot start Hard until you finish Medium with a score of at least 8.',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: 10,),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         ElevatedButton(
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
@@ -347,5 +356,12 @@ class _MainMenuState extends State<MainMenu> {
     }
 
     return true;
+  }
+
+  int getHighScore() {
+    String str = Quiz.parseQuizType(selectedGameType) +
+        Quiz.parseQuizLevel(QuizLevel.easy);
+    Map<String, int> score = widget.playerData.scores;
+    return score[str]!;
   }
 }

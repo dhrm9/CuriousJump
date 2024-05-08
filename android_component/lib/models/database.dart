@@ -31,6 +31,18 @@ class Database {
     box.put(playerName, playerData);
   }
 
+  static List<String> getPlayerList(){
+    final box = Hive.box<PlayerData>('playerData');
+    List<PlayerData> playerList = box.values.toList();
+
+    List<String> list = [];
+
+    for(PlayerData p in playerList){
+      list.add(p.playerName);
+    }
+    return list;
+  }
+
   // Method to get player data from local storage
   static PlayerData getPlayerData(String playerName) {
     final box = Hive.box<PlayerData>('playerData');
@@ -38,21 +50,21 @@ class Database {
     if (playerData == null) {
       // If player data is not found, return default data
       return PlayerData(playerName: playerName, scores: {
-        'AnimalEasy': -100,
-        'AnimalMedium': -100,
-        'AnimalHard': -100,
-        'FruitEasy': -100,
-        'FruitMedium': -100,
-        'FruitHard': -100,
-        'MathsEasy': -100,
-        'MathsMedium': -100,
-        'MathsHard': -100,
-        'CapitalEasy': -100,
-        'CapitalMedium': -100,
-        'CapitalHard': -100,
-        'VegetableEasy': -100,
-        'VegetableMedium': -100,
-        'VegetableHard': -100,
+        'AnimalEasy': 0,
+        'AnimalMedium': 0,
+        'AnimalHard': 0,
+        'FruitEasy': 0,
+        'FruitMedium': 0,
+        'FruitHard': 0,
+        'MathsEasy': 0,
+        'MathsMedium': 0,
+        'MathsHard': 0,
+        'CapitalEasy': 0,
+        'CapitalMedium': 0,
+        'CapitalHard': 0,
+        'VegetableEasy': 0,
+        'VegetableMedium': 0,
+        'VegetableHard': 0,
       });
     } else {
       return playerData;
