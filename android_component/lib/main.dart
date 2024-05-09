@@ -1,5 +1,5 @@
 import 'package:android_component/audio/audio_manager.dart';
-import 'package:android_component/firebase_options.dart';
+import 'package:android_component/database/firebase_options.dart';
 import 'package:android_component/models/player_data.dart';
 import 'package:android_component/screens/start_screen.dart';
 import 'package:firebase_core/firebase_core.dart';

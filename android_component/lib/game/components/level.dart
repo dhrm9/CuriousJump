@@ -1,135 +1,110 @@
+// Importing necessary libraries
 import 'dart:async';
 import 'dart:math';
 
 import 'package:android_component/audio/audio_manager.dart';
-import 'package:android_component/models/database.dart';
+import 'package:android_component/database/database.dart';
 import 'package:android_component/game/components/collision_block.dart';
 import 'package:android_component/game/components/platforms.dart';
 import 'package:android_component/game/components/player.dart';
 import 'package:android_component/game/components/saw.dart';
 import 'package:android_component/game/components/utils.dart';
 import 'package:android_component/game/curious_jump.dart';
-import 'package:android_component/quiz/question.dart';
-import 'package:android_component/quiz/quiz.dart';
+import 'package:android_component/models/question.dart';
+import 'package:android_component/models/quiz.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
+// Define a class called Level which extends World and has a reference to the game
 class Level extends World with HasGameRef<CuriousJump> {
-  late TiledComponent level;
+  late TiledComponent level; // The tiled level component
 
-  final String levelName;
-  final Player player;
-  late Quiz quiz;
-  int questionNumber = 0;
-  late List<int> questionIndexSet;
-  late TextBoxComponent questionText;
-  late TextBoxComponent timerText;
-  List<Component> options = [];
-  List<CollisionBlock> collisionBlocks = [];
-  List<Platform> platforms = [];
-  List<Saw> saws = [];
-  late Timer timer;
-  final int allowedTime;
-  bool changeQuestion = false;
-  bool loadingNewLevel = false;
-  double remainingTime = 0;
-  Random random = Random();
-  QuizType quizType;
-  QuizLevel quizLevel;
+  // Attributes
+  final String levelName; // Name of the level
+  final Player player; // Player object
+  late Quiz quiz; // Quiz object
+  int questionNumber = 0; // Number of the current question
+  late List<int> questionIndexSet; // Set of indices of questions
+  late TextBoxComponent questionText; // Text component for displaying questions
+  late TextBoxComponent timerText; // Text component for displaying timer
+  List<Component> options = []; // List of options for the quiz
+  List<CollisionBlock> collisionBlocks = []; // List of collision blocks in the level
+  List<Platform> platforms = []; // List of platforms in the level
+  List<Saw> saws = []; // List of saws in the level
+  late Timer timer; // Timer for the quiz
+  final int allowedTime; // Allowed time for answering each question
+  bool changeQuestion = false; // Flag to indicate whether to change the question
+  bool loadingNewLevel = false; // Flag to indicate whether a new level is loading
+  double remainingTime = 0; // Remaining time for the current question
+  Random random = Random(); // Random number generator
+  QuizType quizType; // Type of quiz
+  QuizLevel quizLevel; // Level of the quiz
 
-  Level(
-      {required this.levelName,
-      required this.player,
-      required this.allowedTime,
-      required this.quizType,
-      required this.quizLevel
-      });
+  // Constructor
+  Level({
+    required this.levelName,
+    required this.player,
+    required this.allowedTime,
+    required this.quizType,
+    required this.quizLevel
+  });
 
+  // Method called when the level is loaded
   @override
   FutureOr<void> onLoad() async {
-    // switch (quizType) {
-    //   case QuizType.animal:
-    //     quiz = await QuizReader.readJson("assets/quiz/animal.json");
-    //     break;
-    //   case QuizType.fruits:
-    //     quiz = await QuizReader.readJson("assets/quiz/fruit.json");
-    //     break;
-    //   case QuizType.vegetables:
-    //     quiz = await QuizReader.readJson("assets/quiz/vegetable.json");
-    //     break;
-    //   case QuizType.maths:
-    //     quiz = await QuizReader.readJson("assets/quiz/maths.json");
-    //     break;
-    //   case QuizType.capital:
-    //     quiz = await QuizReader.readJson("assets/quiz/capital.json");
-    //     break;
-    //   default:
-    //     break;
-    // }
-
-    // Database.saveToFirestore(
-    //     Quiz.parseQuizType(quizType), quiz.questionsToMapList());
-
+    // Load quiz data from Firestore based on quiz type and level
     quiz = await Database.fetchQuizFromFirestore(Quiz.parseQuizType(quizType), Quiz.parseQuizLevel(quizLevel));
 
+    // Generate a set of indices for questions
     questionIndexSet = List.generate(quiz.questions.length, (index) => index);
 
+    // Load the tiled level
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
-
     add(level);
 
+    // Add text components for displaying questions and timer
     _addTextComponents();
+
+    // Spawn entities such as player and saws
     _spawnEntities();
 
-    final collisionLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
+    // Load collision blocks from the tiled level
+    _loadCollisionBlocks();
 
-    if (collisionLayer != null) {
-      for (final collision in collisionLayer.objects) {
-        switch (collision.class_) {
-          case 'Platform':
-            break;
-          case 'CheckPoint':
-            final platform = Platform(
-                position: Vector2(collision.x, collision.y),
-                size: Vector2(collision.width, collision.height));
-            add(platform);
-            platforms.add(platform);
-            break;
-          default:
-            final block = CollisionBlock(
-              position: Vector2(collision.x, collision.y),
-              size: Vector2(collision.width, collision.height),
-            );
-            add(block);
-            collisionBlocks.add(block);
-            break;
-        }
-      }
-    }
-    player.collisionBlocks = collisionBlocks;
+    // Add overlays for pause button and sure button
     game.overlays.add('PauseButton');
     game.overlays.add('SureButton');
+
+    // Start background music
     AudioManager.instance.startBgm('Bgm.wav');
+
+    // Start the quiz
     reload();
     return super.onLoad();
   }
 
+  // Method called to update the level
   @override
   void update(double dt) {
     super.update(dt);
     timer.update(dt);
     remainingTime = allowedTime - timer.progress * allowedTime;
     timerText.text = remainingTime.toStringAsFixed(1);
+    
+    // Check if the timer has finished and if a new level or question change is loading
     if (timer.finished && (!loadingNewLevel || !changeQuestion)) {
       loadingNewLevel = true;
       player.dontMove();
 
+      // Move saws and check if a question change is required
       for (Saw saw in saws) {
         saw.move();
         if (saw.reachedTop) {
           changeQuestion = true;
         }
       }
+
+      // If a question change is required, handle it
       if (changeQuestion) {
         if (player.onCorrectPlatform) {
           AudioManager.instance.playSfx('Correct.wav');
@@ -149,10 +124,12 @@ class Level extends World with HasGameRef<CuriousJump> {
     }
   }
 
+  // Method to set the remaining time
   void setRemainingTime(double newRem){
     remainingTime = newRem;
   }
 
+  // Method to spawn entities such as player and saws
   void _spawnEntities() {
     final spawnPointLayer = level.tileMap.getLayer<ObjectGroup>('SpawnPoints');
 
@@ -180,14 +157,13 @@ class Level extends World with HasGameRef<CuriousJump> {
     }
   }
 
+  // Method to reload the level or start a new question
   void reload() {
     if (questionIndexSet.isEmpty) {
       game.pauseEngine();
       game.overlays.add('GameOverMenu');
     } else {
       int randomIndex = random.nextInt(questionIndexSet.length);
-
-      // print(randomIndex);
 
       questionNumber = questionIndexSet[randomIndex];
       questionIndexSet.removeAt(randomIndex);
@@ -230,6 +206,7 @@ class Level extends World with HasGameRef<CuriousJump> {
     }
   }
 
+  // Method to add text components for displaying questions and timer
   void _addTextComponents() {
     final textLayer = level.tileMap.getLayer<ObjectGroup>('Texts');
     if (textLayer != null) {
@@ -283,5 +260,35 @@ class Level extends World with HasGameRef<CuriousJump> {
         }
       }
     }
+  }
+
+  // Method to load collision blocks from the tiled level
+  void _loadCollisionBlocks() {
+    final collisionLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
+
+    if (collisionLayer != null) {
+      for (final collision in collisionLayer.objects) {
+        switch (collision.class_) {
+          case 'Platform':
+            break;
+          case 'CheckPoint':
+            final platform = Platform(
+                position: Vector2(collision.x, collision.y),
+                size: Vector2(collision.width, collision.height));
+            add(platform);
+            platforms.add(platform);
+            break;
+          default:
+            final block = CollisionBlock(
+              position: Vector2(collision.x, collision.y),
+              size: Vector2(collision.width, collision.height),
+            );
+            add(block);
+            collisionBlocks.add(block);
+            break;
+        }
+      }
+    }
+    player.collisionBlocks = collisionBlocks;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:android_component/audio/audio_manager.dart';
 import 'package:android_component/game/curious_jump.dart';
-import 'package:android_component/models/database.dart';
-import 'package:android_component/quiz/quiz.dart';
+import 'package:android_component/database/database.dart';
+import 'package:android_component/models/quiz.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +39,7 @@ final questionTextFontStyle = TextPaint(
 final optionTextFontStyle = TextPaint(
   style: const TextStyle(
     fontFamily: 'Minecraftia',
-    fontSize: 18,
+    fontSize: 14,
     color: Colors.white,
   ),
 );
