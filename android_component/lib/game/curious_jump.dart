@@ -5,7 +5,7 @@ import 'package:android_component/game/components/jump_button.dart';
 import 'package:android_component/game/components/level.dart';
 import 'package:android_component/game/components/player.dart';
 import 'package:android_component/models/player_data.dart';
-import 'package:android_component/quiz/quiz.dart';
+import 'package:android_component/models/quiz.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -55,12 +55,18 @@ class CuriousJump extends FlameGame
 
     // Set audio sound based on user preference
     AudioManager.instance.setSound(isSoundOn);
+    int allowedTime = 0;
+    if(quizLevel == QuizLevel.easy){
+      allowedTime = 25;
+    }else{
+      allowedTime = 15;
+    }
 
     // Initialize game level
     world1 = Level(
       player: player,
       levelName: 'level1',
-      allowedTime: 10,
+      allowedTime: allowedTime,
       quizType: quizType,
       quizLevel: quizLevel
     );

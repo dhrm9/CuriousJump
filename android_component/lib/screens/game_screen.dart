@@ -1,7 +1,7 @@
 import 'package:android_component/game/components/utils.dart';
 import 'package:android_component/game/curious_jump.dart';
 import 'package:android_component/models/player_data.dart';
-import 'package:android_component/quiz/quiz.dart';
+import 'package:android_component/models/quiz.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/widgets.dart';
 

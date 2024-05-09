@@ -1,0 +1,125 @@
+{
+    "type": "Vegetable",
+    "questions": [
+      {
+        "question": "Which of them is Beetroot?",
+        "options": [
+          "Bringle",
+          "Capsicum",
+          "Beetroot",
+          "Corn"
+        ],
+        "correctAnswer": "2"
+      },
+      {
+        "question": "Which of them is Corn?",
+        "options": [
+          "Cucumber",
+          "Corn",
+          "Garlic",
+          "Onion"
+        ],
+        "correctAnswer": "1"
+      },
+      {
+        "question": "Which of them is Garlic?",
+        "options": [
+          "Greenchili",
+          "Tomato",
+          "Garlic",
+          "Potato"
+        ],
+        "correctAnswer": "2"
+      },
+      {
+        "question": "Which of them is Onion?",
+        "options": [
+          "Onion",
+          "Pumpkin",
+          "Beetroot",
+          "Carrot"
+        ],
+        "correctAnswer": "0"
+      },
+      {
+        "question": "Which of them is Brinjal?",
+        "options": [
+          "Capsicum",
+          "Brinjal",
+          "Pumpkin",
+          "Carrot"
+        ],
+        "correctAnswer": "1"
+      },
+      {
+        "question": "Which of them is Capsicum?",
+        "options": [
+          "Onion",
+          "Capsicum",
+          "Carrot",
+          "Corn"
+        ],
+        "correctAnswer": "1"
+      },
+      {
+        "question": "Which of them is Cucumber?",
+        "options": [
+          "Cucumber",
+          "Tomato",
+          "Garlic",
+          "Potato"
+        ],
+        "correctAnswer": "0"
+      },
+      {
+        "question": "Which of them is Carrot?",
+        "options": [
+          "Greenchili",
+          "Carrot",
+          "Brinjal",
+          "Pumpkin"
+        ],
+        "correctAnswer": "1"
+      },
+      {
+        "question": "Which of them is Green Chili?",
+        "options": [
+          "Onion",
+          "Greenchili",
+          "Beetroot",
+          "Capsicum"
+        ],
+        "correctAnswer": "1"
+      },
+      {
+        "question": "Which of them is Potato?",
+        "options": [
+          "Onion",
+          "Pumpkin",
+          "Potato",
+          "Carrot"
+        ],
+        "correctAnswer": "2"
+      },
+      {
+        "question": "Which of them is Tomato?",
+        "options": [
+          "Tomato",
+          "Cucumber",
+          "Garlic",
+          "Potato"
+        ],
+        "correctAnswer": "0"
+      },
+      {
+        "question": "Which of them is Pumpkin?",
+        "options": [
+          "Greenchili",
+          "Pumpkin",
+          "Brinjal",
+          "Corn"
+        ],
+        "correctAnswer": "1"
+      }
+    ]
+  }

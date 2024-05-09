@@ -1,4 +1,4 @@
-import 'package:android_component/models/database.dart';
+import 'package:android_component/database/database.dart';
 import 'package:android_component/models/player_data.dart';
 import 'package:android_component/screens/main_menu.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +43,7 @@ class _StartScreenState extends State<StartScreen> {
                   children: [
                     // Text field for entering player's name
                     TextField(
-                      onTap: (){
+                      onTap: () {
                         setState(() {
                           showExistingUser = false;
                         });

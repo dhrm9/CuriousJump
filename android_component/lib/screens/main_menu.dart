@@ -1,5 +1,5 @@
 import 'package:android_component/models/player_data.dart';
-import 'package:android_component/quiz/quiz.dart';
+import 'package:android_component/models/quiz.dart';
 import 'package:android_component/screens/game_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -360,7 +360,7 @@ class _MainMenuState extends State<MainMenu> {
 
   int getHighScore() {
     String str = Quiz.parseQuizType(selectedGameType) +
-        Quiz.parseQuizLevel(QuizLevel.easy);
+        Quiz.parseQuizLevel(selectedLevel);
     Map<String, int> score = widget.playerData.scores;
     return score[str]!;
   }
