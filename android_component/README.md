@@ -40,3 +40,8 @@ You can download the APK of the game from the link below:
 
 [Download the APK](https://drive.google.com/file/d/1PLT00FzcvK-MbVjXqzQpreLRJSyKLt9j/view?pli=1)
 
+## Watch the App
+You can watch the game from the link below:
+
+[To watch gameplay](https://drive.google.com/file/d/1x44AyCP890QeiAfMRaZgIVV__dwrXv8P/view?usp=sharing)
+
